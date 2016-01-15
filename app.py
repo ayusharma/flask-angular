@@ -27,7 +27,7 @@ def add_cors_headers(response):
 
 @app.route("/")
 def index():
-	return render_template("index.html")
+	return render_template("ng-index.html")
 
 # @app.route("/table",methods=['GET'])
 # def table():

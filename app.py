@@ -1,4 +1,4 @@
-from flask import Flask,request,render_template
+from flask import Flask,request,render_template,make_response,jsonify
 import json
 from flask.ext.mysqldb import MySQL
 
@@ -29,14 +29,14 @@ def add_cors_headers(response):
 def index():
 	return render_template("ng-index.html")
 
-@app.route("/db",methods=['GET','PUT','PATCH','DELETE'])
+@app.route("/db",methods=['GET','PUT','POST','DELETE'])
 def db_info():
 	db = {}
 	table_name = 'person'
 	db['name'] = app.config['MYSQL_DB']
+	cur= mysql.connection.cursor()
 	
 	if request.method == 'GET':
-		cur= mysql.connection.cursor()
 		k = cur.execute('''SELECT * FROM '''+table_name)
 		data = cur.fetchall()
 		desc = cur.description
@@ -48,6 +48,13 @@ def db_info():
 			result.append(dict)
 		db['table_data'] = result
 		return json.dumps(db)
+
+	elif request.method == 'POST':
+		if cur.execute('''INSERT INTO '''+table_name+''' (`name`, `city`) VALUES (%s,%s)''',(request.json['name'],request.json['city'])):
+			mysql.connection.commit()
+			return make_response(jsonify({'msg': 'Sucessfully updated', 'status':201}), 201)
+		else:
+			return make_response(jsonify({'msg': 'error', 'status':401}), 401)
 
 # @app.route("/table",methods=['GET'])
 # def table():

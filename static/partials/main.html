@@ -9,16 +9,30 @@
 			<div class="panel-heading">
 			<h3 class="panel-title">Get</h3>
 			</div>
-			<div class="panel-body">
-				<p>
-					ID: 1 <br>
-					Name: Ayush<br>
-					City: Jaipur
+			<div class="panel-body" ng-model="main.tabledata">
+				<p ng-repeat=" x in main.tabledata">
+
+					ID: {{ x.id }} <br>
+					Name: {{ x.name }}<br>
+					City: {{ x.city }}
 				</p>
 			</div>
 		</div>
 	</div>
 	<div  class="col-md-6">
-		
+		<div class="panel panel-default">
+			<div class="panel-heading">
+			<h3 class="panel-title">POST</h3>
+			</div>
+			<div class="panel-body">
+				  <div class="input-group">
+			      <input type="text" class="form-control" placeholder="Name" ng-model="main.personname">
+			      <input type="text" class="form-control" placeholder="City" ng-model="main.personcity">
+			      <span class="input-group-btn">
+			        <button class="btn btn-default" type="button" ng-click="post();">Submit!</button>
+			      </span>
+			    </div><!-- /input-group -->
+			</div>
+		</div>
 	</div>
 </div>

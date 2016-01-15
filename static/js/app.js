@@ -21,11 +21,22 @@ angular.module('rootconf',['ui.router'])
 .controller('MainCtrl',function($scope,MainService){
 
 	$scope.main = {}
-	
-	MainService.getTables().then(function(res){
-		$scope.main.database = res.data.name
-		console.log(res.data)
-	})
+
+	function loaddata(){
+		MainService.getTables().then(function(res){
+			$scope.main.database = res.data.name;
+			$scope.main.tabledata = res.data.table_data;
+			console.log($scope.main.tabledata);
+		})
+	}
+	loaddata();
+
+	$scope.post = function(){
+		MainService.insert($scope.main.personname,$scope.main.personcity).then(function(res){
+			loaddata();
+			console.log(res);
+		})
+	}
 })
 
 .directive('header', [function(){
@@ -54,21 +65,22 @@ angular.module('rootconf',['ui.router'])
 	};
 
 
-	// tableService.getTableData = function(table_name) {
+	mainService.insert = function(name,city) {
 
-	// 	var req = {
-	// 		method:'POST',
-	// 		url:baseURL + 'tabledata',
-	// 		headers: {
-	// 			'Content-Type': 'application/json'
-	// 		},
-	// 		data:{
-	// 			'table_name':table_name
-	// 		}
-	// 	};
-	// 	return $http(req).then(function(res){
-	// 		return res;
-	// 	});
-	// };
+		var req = {
+			method:'POST',
+			url:baseURL + 'db',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			data:{
+				'name':name,
+				'city':city
+			}
+		};
+		return $http(req).then(function(res){
+			return res;
+		});
+	};
 	return mainService;
 })

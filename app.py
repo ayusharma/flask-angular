@@ -6,8 +6,8 @@ app = Flask(__name__)
 mysql = MySQL(app)
 app.secret_key = 'superzoman'  
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'test'
+app.config['MYSQL_PASSWORD'] = 'Ayush22x'
+app.config['MYSQL_DB'] = 'flasktest'
 
 
 def date_handler(obj):
@@ -28,6 +28,26 @@ def add_cors_headers(response):
 @app.route("/")
 def index():
 	return render_template("ng-index.html")
+
+@app.route("/db",methods=['GET','PUT','PATCH','DELETE'])
+def db_info():
+	db = {}
+	table_name = 'person'
+	db['name'] = app.config['MYSQL_DB']
+	
+	if request.method == 'GET':
+		cur= mysql.connection.cursor()
+		k = cur.execute('''SELECT * FROM '''+table_name)
+		data = cur.fetchall()
+		desc = cur.description
+		result = []
+		for i in xrange(k):
+			dict = {}
+			for j in xrange(len(desc)):
+				dict[desc[j][0]] = data[i][j]
+			result.append(dict)
+		db['table_data'] = result
+		return json.dumps(db)
 
 # @app.route("/table",methods=['GET'])
 # def table():

@@ -11,6 +11,10 @@ A basic repository to demonstrate a application made in flask angular using mysq
 ## Run
 `python app.py`
 
+## Screenshot
+
+`https://github.com/ayusharma/flask-angular/blob/master/screenshot.png`
+
 ## About Me
 ##### Ayush Sharma
  Arya College Of Engineering & IT, Jaipur  India.

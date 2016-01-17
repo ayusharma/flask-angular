@@ -7,31 +7,47 @@
 	<div  class="col-md-6">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-			<h3 class="panel-title">Get</h3>
+			<h3 class="panel-title">POST</h3>
 			</div>
-			<div class="panel-body" ng-model="main.tabledata">
-				<p ng-repeat=" x in main.tabledata">
-
-					ID: {{ x.id }} <br>
-					Name: {{ x.name }}<br>
-					City: {{ x.city }}
-				</p>
+			<div class="panel-body">
+		      <input type="text" class="form-control" placeholder="Name" ng-model="main.personname">
+		      <br>
+		      <input type="text" class="form-control" placeholder="City" ng-model="main.personcity">
+		      <br>
+		      <button class="btn btn-default" type="button" ng-click="post();">Submit!</button>   
 			</div>
 		</div>
 	</div>
 	<div  class="col-md-6">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-			<h3 class="panel-title">POST</h3>
+			<h3 class="panel-title">PUT</h3>
 			</div>
 			<div class="panel-body">
-				  <div class="input-group">
-			      <input type="text" class="form-control" placeholder="Name" ng-model="main.personname">
-			      <input type="text" class="form-control" placeholder="City" ng-model="main.personcity">
-			      <span class="input-group-btn">
-			        <button class="btn btn-default" type="button" ng-click="post();">Submit!</button>
-			      </span>
-			    </div><!-- /input-group -->
+			  <input type="text" class="form-control" placeholder="ID" ng-model="main.putid">
+			  <br>
+		      <input type="text" class="form-control" placeholder="Key Term" ng-model="main.keyterm">
+		      <br>
+		      <input type="text" class="form-control" placeholder="Value" ng-model="main.putvalue">
+		      <br>
+		      <button class="btn btn-default" type="button" ng-click="put();">Submit!</button>   
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div  class="col-md-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+			<h3 class="panel-title">GET</h3>
+			</div>
+			<div class="panel-body" ng-model="main.tabledata">
+				<div class="alert alert-warning alert-dismissible" role="alert" ng-repeat=" x in main.tabledata">
+				  <button type="button" class="close" ng-click="delete(x.id)"><span>&times;</span></button>
+				  	ID: {{ x.id }} <br>
+					Name: {{ x.name }}<br>
+					City: {{ x.city }}
+				</div>
 			</div>
 		</div>
 	</div>

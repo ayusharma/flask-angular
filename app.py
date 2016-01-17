@@ -9,22 +9,6 @@ app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'Ayush22x'
 app.config['MYSQL_DB'] = 'flasktest'
 
-
-def date_handler(obj):
-	return obj.isoformat() if hasattr(obj, 'isoformat') else obj
-
-@app.after_request
-def add_cors_headers(response):
-	response.headers.add('Access-Control-Allow-Origin', '*')
-	response.headers.add('Access-Control-Allow-Credentials', 'true')
-	response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
-	response.headers.add('Access-Control-Allow-Headers', 'Authorization')
-	response.headers.add('Access-Control-Allow-Methods', 'GET')
-	response.headers.add('Access-Control-Allow-Methods', 'POST')
-	response.headers.add('Access-Control-Allow-Methods', 'PUT')
-	response.headers.add('Access-Control-Allow-Methods', 'DELETE')
-	return response
-
 @app.route("/")
 def index():
 	return render_template("ng-index.html")
@@ -50,39 +34,25 @@ def db_info():
 		return json.dumps(db)
 
 	elif request.method == 'POST':
-		if cur.execute('''INSERT INTO '''+table_name+''' (`name`, `city`) VALUES (%s,%s)''',(request.json['name'],request.json['city'])):
+		if cur.execute('''INSERT INTO person (`name`, `city`) VALUES (%s,%s)''',(request.json['name'],request.json['city'])):
 			mysql.connection.commit()
-			return make_response(jsonify({'msg': 'Sucessfully updated', 'status':201}), 201)
+			return make_response(jsonify({'msg': 'Successfully updated', 'status':201}), 201)
 		else:
 			return make_response(jsonify({'msg': 'error', 'status':401}), 401)
 
-# @app.route("/table",methods=['GET'])
-# def table():
-# 	cur = mysql.connection.cursor()
-# 	cur.execute('''show TABLES''')
-# 	rv = cur.fetchall()
-# 	result = []
-# 	for row in rv:
-# 		d = dict()
-# 		d['table_name'] = row[0]
-# 		d['value'] = row[0]
-# 		result.append(d)
-# 	return json.dumps(result)
+	elif request.method == 'DELETE':
+		if cur.execute('''DELETE FROM person WHERE `id` = %s ''',[request.json['id']]):
+			mysql.connection.commit()
+			return make_response(jsonify({'msg': 'Successfully deleted', 'status':201}), 201)
+		else:
+			return make_response(jsonify({'msg': 'error', 'status':401}), 401)
 
-# @app.route("/tabledata",methods=['POST'])
-# def tabledata():
-# 	table_name = request.json['table_name']
-# 	cur= mysql.connection.cursor()
-# 	k = cur.execute('''SELECT * FROM '''+table_name)
-# 	data = cur.fetchall()
-# 	desc = cur.description
-# 	result = []
-# 	for i in xrange(k):
-# 		dict = {}
-# 		for j in xrange(len(desc)):
-# 			dict[desc[j][0]] = data[i][j]
-# 		result.append(dict)
-# 	return json.dumps(result,default=date_handler)
+	elif request.method == 'PUT':
+		if cur.execute('''UPDATE person SET '''+request.json['keyterm']+'''= %s WHERE `id`= %s ''',[request.json['value'],request.json['id']]):
+			mysql.connection.commit()
+			return make_response(jsonify({'msg': 'Successfully updated', 'status':201}), 201)
+		else:
+			return make_response(jsonify({'msg': 'error', 'status':401}), 401)
 
 if __name__ == "__main__":
     app.run(debug=True)

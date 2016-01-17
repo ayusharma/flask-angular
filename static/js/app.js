@@ -37,6 +37,25 @@ angular.module('rootconf',['ui.router'])
 			console.log(res);
 		})
 	}
+
+	$scope.delete = function  (del) {
+		var r = confirm("Do you want to delete person with ID"+del);
+	    if (r == true) {
+	    	MainService.delete(del).then(function(res){
+				loaddata();
+				console.log(res);
+			})    
+	    } else {
+	       
+	    }
+	}
+
+	$scope.put = function  () {
+    	MainService.put($scope.main.keyterm,$scope.main.putvalue,$scope.main.putid).then(function(res){
+			loaddata();
+			console.log(res);
+		})    
+	}
 })
 
 .directive('header', [function(){
@@ -76,6 +95,42 @@ angular.module('rootconf',['ui.router'])
 			data:{
 				'name':name,
 				'city':city
+			}
+		};
+		return $http(req).then(function(res){
+			return res;
+		});
+	};
+
+	mainService.delete = function(id) {
+
+		var req = {
+			method:'DELETE',
+			url:baseURL + 'db',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			data:{
+				'id':id,
+			}
+		};
+		return $http(req).then(function(res){
+			return res;
+		});
+	};
+
+	mainService.put = function(keyterm,value,id) {
+
+		var req = {
+			method:'PUT',
+			url:baseURL + 'db',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			data:{
+				'id':id,
+				'keyterm':keyterm,
+				'value':value
 			}
 		};
 		return $http(req).then(function(res){

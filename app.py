@@ -6,7 +6,7 @@ app = Flask(__name__)
 mysql = MySQL(app)
 app.secret_key = 'superzoman'  
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Ayush22x'
+app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'flasktest'
 
 @app.route("/")
